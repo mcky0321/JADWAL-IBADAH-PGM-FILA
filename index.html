@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JADWAL IBADAH PGM & REMAJA JEMAAT FILADELFIA</title>
+    <style>
+        /* Background with church wallpaper and cross */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+        /* Overlay for better readability */
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 2.5em;
+        }
+        .inspiration {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4a6fa5;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Footer with cross icon */
+        footer {
+            text-align: center;
+            font-size: 1em;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        .cross {
+            font-size: 2em;
+            color: #f0e68c;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h1>JADWAL IBADAH PGM & REMAJA JEMAAT FILADELFIA</h1>
+        <div class="inspiration">
+            "Berikanlah yang terbaik dalam melayani, karena setiap pelayanan adalah persembahan bagi Tuhan yang penuh kasih. Semangat dan doa menyertai setiap langkah kita."
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hari/Tanggal</th>
+                    <th>Pelayan Firman</th>
+                    <th>Pelayan Pujian</th>
+                    <th>Pelayan Kolekta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be inserted here by script -->
+            </tbody>
+        </table>
+        <footer>
+            <div class="cross">&#10013;</div>
+            JEMAAT FILADELFIA - Melayani dengan Hati dan Iman
+        </footer>
+    </div>
+    <script>
+        // Data arrays for each role
+        // Pelayan Firman, Pujian, and Kolekta
+        const pelayanFirman = [
+            "Bpk. Gembala",
+            "Bpk. Wakil Gembala",
+            "Pdm, Bpk J Anderi",
+            "Pdm, Bpk D Muabuay",
+            "Ev, Bpk M Kamusi",
+            "Bpk. Wakil Gembala",
+            "Pdm, Bpk J Anderi",
+            "Pdm, Bpk D Muabuay",
+            "Ev, Bpk M Kamusi",
+            "Bpk. Wakil Gembala",
+            "Pdm, Bpk J Anderi",
+            "Pdm, Bpk D Muabuay",
+            "Bpk. Gembala"
+        ];
+
+        const pelayanPujian = [
+            "Pmdi, Juliana Muabuay",
+            "Rmj, Stevanus Bebari",
+            "Rmj, Ferlin Kamusi",
+            "Rmj, Isak Waromi",
+            "Pmdi, Selfi E Muabuay",
+            "Rmj, Keliopas Munua",
+            "Rmj, Miranda Kodey",
+            "Rmj, Trivena Numberi",
+            "Pmda, Henok Muabuay",
+            "Rmj, Luis Munua",
+            "Rmj, Isak Waromi",
+            "Rmj, Keliopas Munua",
+            "Pmda, Henok Muabuay"
+        ];
+
+        const pelayanKolekta = [
+            "Rmj, Miranda Kodey",
+            "Rmj, Aprilia Kamusi",
+            "Rmj, Iren Bisay",
+            "Rmj, Serli Bebari",
+            "Rmj, Miranda Kodey",
+            "Rmj, Aprilia Kamusi",
+            "Rmj, Iren Bisay",
+            "Rmj, Serli Bebari",
+            "Rmj, Miranda Kodey",
+            "Rmj, Aprilia Kamusi",
+            "Rmj, Iren Bisay",
+            "Rmj, Serli Bebari",
+            "Rmj, Miranda Kodey"
+        ];
+
+        // Function to get all Saturdays between two dates
+        function getSaturdays(startDate, endDate) {
+            let dates = [];
+            let currentDate = new Date(startDate);
+            // Set to the first Saturday on or after startDate
+            currentDate.setDate(currentDate.getDate() + (6 - currentDate.getDay() + 7) % 7);
+            while (currentDate <= endDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+            return dates;
+        }
+
+        // Generate the schedule rows
+        function generateSchedule() {
+            const tbody = document.querySelector("tbody");
+            const startDate = new Date(2025, 4, 1); // May 1, 2025 (month is 0-based)
+            const endDate = new Date(2025, 6, 31); // July 31, 2025
+            const saturdays = getSaturdays(startDate, endDate);
+
+            for (let i = 0; i < saturdays.length; i++) {
+                const date = saturdays[i];
+                const day = "Sabtu";
+                const dateString = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                // Cycle through the arrays using modulo
+                const firman = pelayanFirman[i % pelayanFirman.length];
+                const pujian = pelayanPujian[i % pelayanPujian.length];
+                const kolekta = pelayanKolekta[i % pelayanKolekta.length];
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${day}, ${dateString}</td>
+                    <td>${firman}</td>
+                    <td>${pujian}</td>
+                    <td>${kolekta}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        generateSchedule();
+    </script>
+</body>
+</html>
